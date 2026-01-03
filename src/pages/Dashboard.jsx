@@ -1,0 +1,317 @@
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { useToast } from '../context/ToastContext';
+import PiggyBank from '../components/PiggyBank';
+import InvestmentFlow from '../components/InvestmentFlow';
+import StoryEducation from '../components/StoryEducation';
+import TransparencyScreen from '../components/TransparencyScreen';
+import Chatbot from '../components/Chatbot';
+import CreateGoal from '../components/CreateGoal';
+
+const Dashboard = () => {
+    const { t, i18n } = useTranslation();
+    const navigate = useNavigate();
+    const { toast } = useToast();
+    const [activeTab, setActiveTab] = useState('home');
+    const [user, setUser] = useState(null);
+    const [balance, setBalance] = useState(0); // Main wallet balance
+    const [piggyBalance, setPiggyBalance] = useState(0); // Piggy bank balance
+    const [portfolio, setPortfolio] = useState({ gold: 0, bonds: 0, funds: 0 });
+    const [goals, setGoals] = useState([]);
+    const [showCreateGoal, setShowCreateGoal] = useState(false);
+
+    const fetchUserData = () => {
+        const userId = localStorage.getItem('userId');
+        if (!userId) {
+            navigate('/login');
+            return;
+        }
+
+        fetch(`/api/user/${userId}`)
+            .then(res => res.json())
+            .then(data => {
+                setUser(data);
+                if (data.balance !== undefined) setBalance(data.balance);
+                if (data.piggy_balance !== undefined) setPiggyBalance(data.piggy_balance);
+                if (data.portfolio) setPortfolio(data.portfolio);
+            })
+            .catch(err => console.error("Failed to fetch user data", err));
+    };
+
+    const fetchGoals = (userId) => {
+        fetch(`/api/goals/${userId}`)
+            .then(res => res.json())
+            .then(data => setGoals(data))
+            .catch(err => console.error("Failed to fetch goals", err));
+    };
+
+    useEffect(() => {
+        fetchUserData();
+        const userId = localStorage.getItem('userId');
+        if (userId) {
+            fetchGoals(userId);
+        }
+    }, [navigate]);
+
+    const handleInvest = async (amount, goalId = null, assetType = 'bonds') => {
+        const userId = localStorage.getItem('userId');
+        if (!userId) return;
+
+        try {
+            const res = await fetch('/api/invest', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId, amount, goalId, assetType })
+            });
+            if (res.ok) {
+                fetchUserData(); // Refresh full user data
+                fetchGoals(userId);
+                setActiveTab('home');
+                toast.success("Investment successful!");
+            } else {
+                toast.error("Investment failed");
+            }
+        } catch (err) {
+            toast.error("Error processing investment");
+        }
+    };
+
+    const handleGoalCreated = () => {
+        setShowCreateGoal(false);
+        const userId = localStorage.getItem('userId');
+        fetchGoals(userId);
+    };
+
+    const handleLogout = () => {
+        localStorage.removeItem('userId');
+        localStorage.removeItem('userPhone');
+        navigate('/login');
+    };
+
+    const renderContent = () => {
+        switch (activeTab) {
+            case 'home':
+                return (
+                    <div className="flex-col" style={{ padding: '24px', gap: '24px' }}>
+                        {/* Header */}
+                        <div className="flex-center" style={{ justifyContent: 'space-between' }}>
+                            <div>
+                                <h1 style={{ fontSize: '1.5rem', fontWeight: 700 }}>{t('dashboard.greeting')}, {user?.phone || 'Friend'}! 🙏</h1>
+                                <p style={{ color: 'var(--color-text-muted)' }}>{t('dashboard.subtitle')}</p>
+                            </div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <select
+                                    value={i18n.language}
+                                    onChange={(e) => i18n.changeLanguage(e.target.value)}
+                                    style={{
+                                        padding: '4px 8px',
+                                        border: '1px solid var(--color-primary)',
+                                        borderRadius: '4px',
+                                        background: 'white',
+                                        color: 'var(--color-primary)',
+                                        fontSize: '0.8rem',
+                                        fontWeight: 600,
+                                        cursor: 'pointer',
+                                        outline: 'none'
+                                    }}
+                                >
+                                    <option value="en">English</option>
+                                    <option value="hi">हिंदी</option>
+                                    <option value="bn">বাংলা</option>
+                                    <option value="mr">मराठी</option>
+                                    <option value="ta">தமிழ்</option>
+                                    <option value="te">తెలుగు</option>
+                                    <option value="kn">ಕನ್ನಡ</option>
+                                    <option value="gu">ગુજરાતી</option>
+                                    <option value="ml">മലയാളം</option>
+                                    <option value="pa">ਪੰਜਾਬੀ</option>
+                                    <option value="or">ଓଡ଼ିଆ</option>
+                                    <option value="as">অসমীয়া</option>
+                                    <option value="ur">اردو</option>
+                                    <option value="ne">नेपाली</option>
+                                    <option value="kok">कोंकणी</option>
+                                </select>
+                                <button
+                                    onClick={handleLogout}
+                                    style={{
+                                        background: '#f44336',
+                                        color: 'white',
+                                        border: 'none',
+                                        borderRadius: '4px',
+                                        padding: '4px 8px',
+                                        fontSize: '0.8rem',
+                                        fontWeight: 600,
+                                        cursor: 'pointer'
+                                    }}
+                                >
+                                    Logout
+                                </button>
+                                <div
+                                    className="flex-center"
+                                    style={{ width: 40, height: 40, background: 'var(--color-primary-fade)', borderRadius: '50%' }}
+                                >
+                                    👤
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Piggy Bank Section */}
+                        {user && (
+                            <section className="section">
+                                <PiggyBank
+                                    userId={user.id}
+                                    piggyBalance={piggyBalance}
+                                    onUpdate={fetchUserData}
+                                />
+                            </section>
+                        )}
+
+                        {/* Quick Action Card (Main Savings) */}
+                        <div className="card" style={{ marginTop: '10px', background: 'linear-gradient(135deg, var(--color-secondary), #26A69A)', color: 'white' }}>
+                            <div className="flex-center" style={{ justifyContent: 'space-between', marginBottom: '8px' }}>
+                                <span style={{ fontSize: '0.9rem', opacity: 0.9 }}>{t('dashboard.currentSavings')}</span>
+                                <span style={{ fontSize: '1.2rem', fontWeight: 600 }}>₹{balance}</span>
+                            </div>
+                            <p style={{ fontSize: '0.85rem', opacity: 0.9, marginBottom: '16px' }}>{t('dashboard.safeInBonds')}</p>
+
+                            <div style={{ marginTop: '16px', marginBottom: '24px' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 0', borderBottom: '1px solid rgba(255,255,255,0.2)' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                        <span style={{ fontSize: '1.2rem' }}>🥇</span>
+                                        <span style={{ fontSize: '0.9rem', opacity: 0.9 }}>{t('assets.gold')}</span>
+                                    </div>
+                                    <span style={{ fontWeight: 600 }}>₹{portfolio.gold}</span>
+                                </div>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 0', borderBottom: '1px solid rgba(255,255,255,0.2)' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                        <span style={{ fontSize: '1.2rem' }}>📜</span>
+                                        <span style={{ fontSize: '0.9rem', opacity: 0.9 }}>{t('assets.bonds')}</span>
+                                    </div>
+                                    <span style={{ fontWeight: 600 }}>₹{portfolio.bonds}</span>
+                                </div>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 0' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                        <span style={{ fontSize: '1.2rem' }}>📈</span>
+                                        <span style={{ fontSize: '0.9rem', opacity: 0.9 }}>{t('assets.funds')}</span>
+                                    </div>
+                                    <span style={{ fontWeight: 600 }}>₹{portfolio.funds}</span>
+                                </div>
+                            </div>
+
+                            <button
+                                onClick={() => setActiveTab('invest')}
+                                style={{
+                                    background: 'white',
+                                    color: 'var(--color-secondary)',
+                                    border: 'none',
+                                    borderRadius: 'var(--radius-pill)',
+                                    padding: '10px 20px',
+                                    fontWeight: 600,
+                                    width: '100%'
+                                }}
+                            >
+                                {t('dashboard.startSaving')}
+                            </button>
+                        </div>
+
+                        {/* Goals Section */}
+                        <div style={{ marginTop: '24px' }}>
+                            <div className="flex-center" style={{ justifyContent: 'space-between', marginBottom: '16px' }}>
+                                <h3 style={{ fontSize: '1.2rem', fontWeight: 600 }}>{t('dashboard.myGoals')}</h3>
+                                <button
+                                    onClick={() => setShowCreateGoal(true)}
+                                    style={{ background: 'none', border: 'none', color: 'var(--color-primary)', fontSize: '0.9rem', fontWeight: 600 }}
+                                >
+                                    {t('dashboard.addGoal')}
+                                </button>
+                            </div>
+
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                                {goals.length === 0 && (
+                                    <div style={{ gridColumn: 'span 2', textAlign: 'center', padding: '20px', background: '#f9f9f9', borderRadius: '12px', color: '#888', fontSize: '0.9rem' }}>
+                                        {t('dashboard.emptyGoals')}
+                                    </div>
+                                )}
+                                {goals.map(goal => (
+                                    <div key={goal.id} className="card" style={{ padding: '16px', margin: 0 }}>
+                                        <div style={{ fontSize: '2rem', marginBottom: '8px' }}>{goal.icon}</div>
+                                        <div style={{ fontSize: '1rem', fontWeight: 600, marginBottom: '4px' }}>{goal.name}</div>
+                                        <div style={{ fontSize: '0.8rem', color: '#666', marginBottom: '8px' }}>₹{goal.current_amount} / ₹{goal.target_amount}</div>
+                                        <div style={{ width: '100%', height: '6px', background: '#eee', borderRadius: '3px', overflow: 'hidden' }}>
+                                            <div style={{ width: `${Math.min((goal.current_amount / goal.target_amount) * 100, 100)}%`, height: '100%', background: 'var(--color-primary)' }} />
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                );
+            case 'invest':
+                return <InvestmentFlow onBack={() => setActiveTab('home')} onInvest={handleInvest} goals={goals} />;
+            case 'learn':
+                return <StoryEducation />;
+            case 'transparency':
+                return <TransparencyScreen />;
+            default:
+                return <div>Home</div>;
+        }
+    };
+
+    return (
+        <div style={{ paddingBottom: '80px' }}>
+            {renderContent()}
+
+            {showCreateGoal && (
+                <CreateGoal
+                    onGoalCreated={handleGoalCreated}
+                    onCancel={() => setShowCreateGoal(false)}
+                />
+            )}
+
+            <Chatbot />
+
+            {/* Bottom Navigation */}
+            <nav
+                style={{
+                    position: 'fixed',
+                    bottom: 0,
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    width: '100%',
+                    maxWidth: '420px',
+                    background: 'white',
+                    borderTop: '1px solid #eee',
+                    padding: '12px 0 24px 0',
+                    display: 'flex',
+                    justifyContent: 'space-around',
+                    zIndex: 100
+                }}
+            >
+                <NavIcon icon="🏠" label={t('dashboard.nav.home')} active={activeTab === 'home'} onClick={() => setActiveTab('home')} />
+                <NavIcon icon="📚" label={t('dashboard.nav.learn')} active={activeTab === 'learn'} onClick={() => setActiveTab('learn')} />
+                <NavIcon icon="🛡️" label={t('dashboard.nav.trust')} active={activeTab === 'transparency'} onClick={() => setActiveTab('transparency')} />
+            </nav>
+        </div>
+    );
+};
+
+const NavIcon = ({ icon, label, active, onClick }) => (
+    <button
+        onClick={onClick}
+        style={{
+            background: 'none',
+            border: 'none',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            color: active ? 'var(--color-primary)' : 'var(--color-text-muted)',
+            gap: '4px'
+        }}
+    >
+        <span style={{ fontSize: '1.5rem', filter: active ? 'none' : 'grayscale(100%)' }}>{icon}</span>
+        <span style={{ fontSize: '0.75rem', fontWeight: active ? 600 : 400 }}>{label}</span>
+    </button>
+);
+
+export default Dashboard;

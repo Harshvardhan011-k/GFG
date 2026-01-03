@@ -1,0 +1,86 @@
+{
+    "login": {
+        "welcome": "Welcome",
+        "subtitle": "Safe. Simple. Secure.",
+        "phoneLabel": "Mobile Number",
+        "sendOtp": "Send OTP",
+        "verifyOtp": "Verify OTP",
+        "enterOtp": "Enter OTP",
+        "resend": "Resend Code"
+    },
+    "dashboard": {
+        "greeting": "Namaste",
+        "subtitle": "Let's grow your wealth.",
+        "currentSavings": "Current Portfolio",
+        "safeInBonds": "Invested in Gold, Bonds, & Funds",
+        "startSaving": "Start Investing ₹10",
+        "myGoals": "My Goals",
+        "addGoal": "+ Add Goal",
+        "emptyGoals": "No goals yet. Start saving for something special!",
+        "nav": {
+            "home": "Home",
+            "learn": "Learn",
+            "trust": "Trust"
+        }
+    },
+    "assets": {
+        "gold": "Digital Gold",
+        "bonds": "Govt Bonds",
+        "funds": "Mutual Funds"
+    },
+    "chatbot": {
+        "title": "Investment Assistant",
+        "placeholder": "Ask about Gold, Bonds, or Funds...",
+        "welcome": "Namaste! I can help you invest in Gold, Bonds, or Mutual Funds. What would you like to know?"
+    },
+    "invest": {
+        "title": "Invest Smart.",
+        "subtitle": "Choose from Gold, Government Bonds, or Mutual Funds.",
+        "iWantToSave": "I want to invest",
+        "paymentMethods": "🔒 Google Pay / PhonePe / UPI",
+        "cta": "Invest ₹{{amount}} Securely",
+        "back": "Back"
+    },
+    "piggy": {
+        "title": "My Piggy Bank",
+        "break": "Break Piggy Bank",
+        "confirmBreak": "Are you sure you want to break your piggy bank and invest the savings?",
+        "brokenMessage": "Piggy Bank broken! Money added to your main balance."
+    },
+    "learn": {
+        "title": "Learn Investing 🧠",
+        "subtitle": "Simple stories to make you a smart investor.",
+        "story1": {
+            "title": "Why Invest?",
+            "content": "Saving cash isn't enough. Inflation eats regular money. Investing makes your money work for you and grow faster than rising prices!"
+        },
+        "story2": {
+            "title": "Digital Gold 🥇",
+            "content": "You don't need to buy a whole coin. You can buy pure 24K gold for just ₹10. It is stored safely in a digital locker for you."
+        },
+        "story3": {
+            "title": "Mutual Funds 📈",
+            "content": "A basket of top companies. When these companies grow, your money grows. It's great for long-term wealth creation over 3-5 years."
+        },
+        "story4": {
+            "title": "Govt Bonds 📜",
+            "content": "The safest option. You lend money to the Government of India. They promise to pay you back with guaranteed interest. Zero risk."
+        }
+    },
+    "transparency": {
+        "title": "Where is my money?",
+        "you": "You",
+        "youDesc": "You invest using your bank account.",
+        "app": "Invest App",
+        "appDesc": "We instantly allocate it to your chosen asset.",
+        "govt": "Secure Assets",
+        "govtDesc": "Gold in vaults, Bonds with Govt, Funds with AMCs.",
+        "alwaysAvailable": "Always Available",
+        "alwaysAvailableDesc": "Sell anytime. Money reaches back in 24-48 hours."
+    },
+    "voice": {
+        "guide": "Guide",
+        "listening": "Listening...",
+        "tap": "Tap to speak"
+    }
+}
