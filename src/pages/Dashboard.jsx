@@ -13,6 +13,7 @@ const Dashboard = () => {
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState('home');
     const [balance, setBalance] = useState(0);
+    const [portfolio, setPortfolio] = useState({ gold: 0, bonds: 0, funds: 0 });
     const [goals, setGoals] = useState([]);
     const [showCreateGoal, setShowCreateGoal] = useState(false);
 
@@ -31,6 +32,7 @@ const Dashboard = () => {
             .then(res => res.json())
             .then(data => {
                 if (data.balance !== undefined) setBalance(data.balance);
+                if (data.portfolio) setPortfolio(data.portfolio);
             })
             .catch(err => console.error("Failed to fetch user data", err));
     };
@@ -42,7 +44,7 @@ const Dashboard = () => {
             .catch(err => console.error("Failed to fetch goals", err));
     };
 
-    const handleInvest = async (amount, goalId = null) => {
+    const handleInvest = async (amount, goalId = null, assetType = 'bonds') => {
         const userId = localStorage.getItem('userId');
         if (!userId) return;
 
@@ -50,10 +52,11 @@ const Dashboard = () => {
             const res = await fetch('/api/invest', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userId, amount, goalId })
+                body: JSON.stringify({ userId, amount, goalId, assetType })
             });
             if (res.ok) {
                 setBalance(prev => prev + amount);
+                fetchUser(userId); // Refresh full user data to get updated portfolio
                 fetchGoals(userId);
                 setActiveTab('home');
             } else {
@@ -148,19 +151,19 @@ const Dashboard = () => {
                         {/* Goals Section */}
                         <div style={{ marginTop: '24px' }}>
                             <div className="flex-center" style={{ justifyContent: 'space-between', marginBottom: '16px' }}>
-                                <h3 style={{ fontSize: '1.2rem', fontWeight: 600 }}>My Goals</h3>
+                                <h3 style={{ fontSize: '1.2rem', fontWeight: 600 }}>{t('dashboard.myGoals')}</h3>
                                 <button
                                     onClick={() => setShowCreateGoal(true)}
                                     style={{ background: 'none', border: 'none', color: 'var(--color-primary)', fontSize: '0.9rem', fontWeight: 600 }}
                                 >
-                                    + Add Goal
+                                    {t('dashboard.addGoal')}
                                 </button>
                             </div>
 
                             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                                 {goals.length === 0 && (
                                     <div style={{ gridColumn: 'span 2', textAlign: 'center', padding: '20px', background: '#f9f9f9', borderRadius: '12px', color: '#888', fontSize: '0.9rem' }}>
-                                        No goals yet. Start saving for something special!
+                                        {t('dashboard.emptyGoals')}
                                     </div>
                                 )}
                                 {goals.map(goal => (
@@ -183,6 +186,31 @@ const Dashboard = () => {
                                 <span style={{ fontSize: '1.2rem', fontWeight: 600 }}>₹{balance}</span>
                             </div>
                             <p style={{ fontSize: '0.85rem', opacity: 0.9, marginBottom: '16px' }}>{t('dashboard.safeInBonds')}</p>
+
+                            <div style={{ marginTop: '16px', marginBottom: '24px' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 0', borderBottom: '1px solid rgba(255,255,255,0.2)' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                        <span style={{ fontSize: '1.2rem' }}>🥇</span>
+                                        <span style={{ fontSize: '0.9rem', opacity: 0.9 }}>{t('assets.gold')}</span>
+                                    </div>
+                                    <span style={{ fontWeight: 600 }}>₹{portfolio.gold}</span>
+                                </div>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 0', borderBottom: '1px solid rgba(255,255,255,0.2)' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                        <span style={{ fontSize: '1.2rem' }}>📜</span>
+                                        <span style={{ fontSize: '0.9rem', opacity: 0.9 }}>{t('assets.bonds')}</span>
+                                    </div>
+                                    <span style={{ fontWeight: 600 }}>₹{portfolio.bonds}</span>
+                                </div>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 0' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                        <span style={{ fontSize: '1.2rem' }}>📈</span>
+                                        <span style={{ fontSize: '0.9rem', opacity: 0.9 }}>{t('assets.funds')}</span>
+                                    </div>
+                                    <span style={{ fontWeight: 600 }}>₹{portfolio.funds}</span>
+                                </div>
+                            </div>
+
                             <button
                                 onClick={() => setActiveTab('invest')}
                                 style={{

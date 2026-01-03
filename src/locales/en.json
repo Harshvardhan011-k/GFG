@@ -14,11 +14,19 @@
         "currentSavings": "Current Portfolio",
         "safeInBonds": "Invested in Gold, Bonds, & Funds",
         "startSaving": "Start Investing ₹10",
+        "myGoals": "My Goals",
+        "addGoal": "+ Add Goal",
+        "emptyGoals": "No goals yet. Start saving for something special!",
         "nav": {
             "home": "Home",
             "learn": "Learn",
             "trust": "Trust"
         }
+    },
+    "assets": {
+        "gold": "Digital Gold",
+        "bonds": "Govt Bonds",
+        "funds": "Mutual Funds"
     },
     "chatbot": {
         "title": "Investment Assistant",

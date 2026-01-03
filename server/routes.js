@@ -51,12 +51,49 @@ router.post('/verify-otp', (req, res) => {
     }
 });
 
-// Get user info
+// Get user info and portfolio breakdown
 router.get('/user/:id', (req, res) => {
     const userId = req.params.id;
-    db.get('SELECT * FROM users WHERE id = ?', [userId], (err, row) => {
+    db.get('SELECT * FROM users WHERE id = ?', [userId], (err, user) => {
         if (err) return res.status(500).json({ error: err.message });
-        res.json(row);
+        if (!user) return res.status(404).json({ error: "User not found" });
+
+        // Calculate portfolio breakdown from transactions
+        db.all(
+            `SELECT asset_type, SUM(amount) as total 
+             FROM transactions 
+             WHERE user_id = ? AND type = 'credit' 
+             GROUP BY asset_type`,
+            [userId],
+            (err, rows) => {
+                if (err) {
+                    // Fallback if query fails, just return user
+                    console.error("Error fetching portfolio:", err);
+                    return res.json(user);
+                }
+
+                const portfolio = {
+                    gold: 0,
+                    bonds: 0,
+                    funds: 0
+                };
+
+                rows.forEach(row => {
+                    if (row.asset_type && row.total) {
+                        portfolio[row.asset_type] = row.total;
+                    }
+                });
+
+                // If user has balance but no specific asset records (old data), default to bonds
+                // This is a rough estimation for backward compatibility display
+                const portfolioTotal = Object.values(portfolio).reduce((a, b) => a + b, 0);
+                if (user.balance > portfolioTotal) {
+                    portfolio.bonds += (user.balance - portfolioTotal);
+                }
+
+                res.json({ ...user, portfolio });
+            }
+        );
     });
 });
 
@@ -84,7 +121,7 @@ router.post('/goals', (req, res) => {
 
 // Invest Money
 router.post('/invest', (req, res) => {
-    const { userId, amount, goalId } = req.body;
+    const { userId, amount, goalId, assetType = 'bonds' } = req.body;
 
     db.serialize(() => {
         // Update user balance
@@ -101,8 +138,8 @@ router.post('/invest', (req, res) => {
 
         // Record transaction
         db.run(
-            'INSERT INTO transactions (user_id, amount, type, goal_id) VALUES (?, ?, ?, ?)',
-            [userId, amount, 'credit', goalId || null],
+            'INSERT INTO transactions (user_id, amount, type, goal_id, asset_type) VALUES (?, ?, ?, ?, ?)',
+            [userId, amount, 'credit', goalId || null, assetType],
             function (err) {
                 if (err) return res.status(500).json({ error: err.message });
                 res.json({ message: 'Investment successful', transactionId: this.lastID });

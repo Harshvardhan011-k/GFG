@@ -25,17 +25,22 @@ const db = new sqlite3.Database(dbPath, (err) => {
                 amount INTEGER,
                 type TEXT,
                 goal_id INTEGER,
+                asset_type TEXT DEFAULT 'bonds',
                 date DATETIME DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (user_id) REFERENCES users(id)
             )`, (err) => {
                 if (!err) {
                     // Quick migration check: Try to add goal_id column
-                    // If it exists, this will fail harmlessly
                     db.run("ALTER TABLE transactions ADD COLUMN goal_id INTEGER", (err) => {
                         if (err && !err.message.includes("duplicate column name")) {
-                            console.log("Migration info:", err.message);
-                        } else if (!err) {
-                            console.log("Migrated transactions table: Added goal_id");
+                            console.log("Migration info (goal_id):", err.message);
+                        }
+                    });
+
+                    // Migration for asset_type
+                    db.run("ALTER TABLE transactions ADD COLUMN asset_type TEXT DEFAULT 'bonds'", (err) => {
+                        if (err && !err.message.includes("duplicate column name")) {
+                            console.log("Migration info (asset_type):", err.message);
                         }
                     });
                 }

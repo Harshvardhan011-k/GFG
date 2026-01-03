@@ -14,9 +14,9 @@ const InvestmentFlow = ({ onBack, onInvest, goals = [] }) => {
     const increments = [10, 20, 50, 100, 500];
 
     const assets = [
-        { id: 'gold', name: 'Digital Gold', icon: '🥇', color: '#FFF8E1', border: '#FFC107' },
-        { id: 'bonds', name: 'Govt Bonds', icon: '📜', color: '#E8F5E9', border: '#4CAF50' },
-        { id: 'funds', name: 'Mutual Funds', icon: '📈', color: '#E3F2FD', border: '#2196F3' }
+        { id: 'gold', name: t('assets.gold'), icon: '🥇', color: '#FFF8E1', border: '#FFC107' },
+        { id: 'bonds', name: t('assets.bonds'), icon: '📜', color: '#E8F5E9', border: '#4CAF50' },
+        { id: 'funds', name: t('assets.funds'), icon: '📈', color: '#E3F2FD', border: '#2196F3' }
     ];
 
     return (
@@ -133,7 +133,7 @@ const InvestmentFlow = ({ onBack, onInvest, goals = [] }) => {
                 <div className="flex-center" style={{ gap: '8px', marginBottom: '16px', fontSize: '0.85rem', color: 'var(--color-text-muted)' }}>
                     <span>{t('invest.paymentMethods')}</span>
                 </div>
-                <button className="btn-primary" onClick={() => onInvest(amount, selectedGoalId)}>
+                <button className="btn-primary" onClick={() => onInvest(amount, selectedGoalId, selectedAsset)}>
                     {t('invest.cta', { amount })}
                 </button>
             </div>
