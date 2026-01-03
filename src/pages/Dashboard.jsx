@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import VoiceGuide from '../components/VoiceGuide';
+
 import InvestmentFlow from '../components/InvestmentFlow';
 import StoryEducation from '../components/StoryEducation';
 import TransparencyScreen from '../components/TransparencyScreen';
@@ -143,7 +143,7 @@ const Dashboard = () => {
                         </div>
 
                         {/* Voice Guide Hero */}
-                        <VoiceGuide />
+
 
                         {/* Goals Section */}
                         <div style={{ marginTop: '24px' }}>

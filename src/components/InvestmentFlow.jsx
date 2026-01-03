@@ -5,12 +5,19 @@ const InvestmentFlow = ({ onBack, onInvest, goals = [] }) => {
     const { t } = useTranslation();
     const [amount, setAmount] = useState(10);
     const [selectedGoalId, setSelectedGoalId] = useState(null);
+    const [selectedAsset, setSelectedAsset] = useState('gold');
 
     const handleSliderChange = (e) => {
         setAmount(parseInt(e.target.value));
     };
 
     const increments = [10, 20, 50, 100, 500];
+
+    const assets = [
+        { id: 'gold', name: 'Digital Gold', icon: '🥇', color: '#FFF8E1', border: '#FFC107' },
+        { id: 'bonds', name: 'Govt Bonds', icon: '📜', color: '#E8F5E9', border: '#4CAF50' },
+        { id: 'funds', name: 'Mutual Funds', icon: '📈', color: '#E3F2FD', border: '#2196F3' }
+    ];
 
     return (
         <div className="flex-col" style={{ padding: '24px', height: '100%' }}>
@@ -59,6 +66,33 @@ const InvestmentFlow = ({ onBack, onInvest, goals = [] }) => {
                 </div>
             </div>
 
+            {/* Asset Selection */}
+            <div style={{ marginBottom: '24px' }}>
+                <label style={{ display: 'block', marginBottom: '12px', fontWeight: 600 }}>Choose Asset Class:</label>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '8px' }}>
+                    {assets.map(asset => (
+                        <button
+                            key={asset.id}
+                            onClick={() => setSelectedAsset(asset.id)}
+                            style={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                padding: '12px 4px',
+                                borderRadius: '12px',
+                                border: selectedAsset === asset.id ? `2px solid ${asset.border}` : '1px solid #eee',
+                                background: selectedAsset === asset.id ? asset.color : 'transparent',
+                                cursor: 'pointer',
+                                transition: 'all 0.2s'
+                            }}
+                        >
+                            <span style={{ fontSize: '1.5rem', marginBottom: '4px' }}>{asset.icon}</span>
+                            <span style={{ fontSize: '0.75rem', fontWeight: 600, textAlign: 'center' }}>{asset.name}</span>
+                        </button>
+                    ))}
+                </div>
+            </div>
+
             {/* Goal Selection */}
             {goals.length > 0 && (
                 <div style={{ marginBottom: '24px' }}>
@@ -74,7 +108,7 @@ const InvestmentFlow = ({ onBack, onInvest, goals = [] }) => {
                                 whiteSpace: 'nowrap'
                             }}
                         >
-                            General Savings
+                            General Investing
                         </button>
                         {goals.map(goal => (
                             <button

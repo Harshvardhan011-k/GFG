@@ -10,10 +10,10 @@
     },
     "dashboard": {
         "greeting": "Namaste",
-        "subtitle": "Let's grow your savings.",
-        "currentSavings": "Current Savings",
-        "safeInBonds": "Safe in Government Bonds",
-        "startSaving": "Start Saving ₹10",
+        "subtitle": "Let's grow your wealth.",
+        "currentSavings": "Current Portfolio",
+        "safeInBonds": "Invested in Gold, Bonds, & Funds",
+        "startSaving": "Start Investing ₹10",
         "nav": {
             "home": "Home",
             "learn": "Learn",
@@ -21,52 +21,52 @@
         }
     },
     "chatbot": {
-        "title": "Help Assistant",
-        "placeholder": "Type your question...",
-        "welcome": "Namaste! How can I help you with your savings today?"
+        "title": "Investment Assistant",
+        "placeholder": "Ask about Gold, Bonds, or Funds...",
+        "welcome": "Namaste! I can help you invest in Gold, Bonds, or Mutual Funds. What would you like to know?"
     },
     "invest": {
-        "title": "Save Safe.",
-        "subtitle": "Your money goes into Government Bonds. 100% Secure.",
-        "iWantToSave": "I want to save",
+        "title": "Invest Smart.",
+        "subtitle": "Choose from Gold, Government Bonds, or Mutual Funds.",
+        "iWantToSave": "I want to invest",
         "paymentMethods": "🔒 Google Pay / PhonePe / UPI",
-        "cta": "Save ₹{{amount}} Securely",
+        "cta": "Invest ₹{{amount}} Securely",
         "back": "Back"
     },
     "learn": {
-        "title": "Learn Money 🧠",
+        "title": "Learn Investing 🧠",
         "subtitle": "Simple stories to make you a smart investor.",
         "story1": {
-            "title": "Why ₹10 matters?",
-            "content": "Even small drops make an ocean. Saving just ₹10 a day adds up to ₹3,650 in a year! Start small, dream big."
+            "title": "Why Invest?",
+            "content": "Saving cash isn't enough. Inflation eats regular money. Investing makes your money work for you and grow faster than rising prices!"
         },
         "story2": {
-            "title": "What is a Bond?",
-            "content": "A bond is like a loan you give to the Government. They promise to pay you back with interest. It's the safest way to grow money."
+            "title": "Digital Gold 🥇",
+            "content": "You don't need to buy a whole coin. You can buy pure 24K gold for just ₹10. It is stored safely in a digital locker for you."
         },
         "story3": {
-            "title": "Compound Magic",
-            "content": "Compounding is earning interest on interest. The earlier you start, the more your money grows magically over time!"
+            "title": "Mutual Funds 📈",
+            "content": "A basket of top companies. When these companies grow, your money grows. It's great for long-term wealth creation over 3-5 years."
         },
         "story4": {
-            "title": "Safe Withdrawals",
-            "content": "Need money urgently? No problem! You can withdraw your savings anytime and get it in your bank within 24 hours."
+            "title": "Govt Bonds 📜",
+            "content": "The safest option. You lend money to the Government of India. They promise to pay you back with guaranteed interest. Zero risk."
         }
     },
     "transparency": {
         "title": "Where is my money?",
         "you": "You",
-        "youDesc": "You save money from your bank.",
+        "youDesc": "You invest using your bank account.",
         "app": "Invest App",
-        "appDesc": "We safely send it instantly.",
-        "govt": "Government Bond",
-        "govtDesc": "Held securely by the Govt of India.",
+        "appDesc": "We instantly allocate it to your chosen asset.",
+        "govt": "Secure Assets",
+        "govtDesc": "Gold in vaults, Bonds with Govt, Funds with AMCs.",
         "alwaysAvailable": "Always Available",
-        "alwaysAvailableDesc": "Withdraw anytime. Money reaches back in 24 hours."
+        "alwaysAvailableDesc": "Sell anytime. Money reaches back in 24-48 hours."
     },
     "voice": {
-        "guide": "Didi's Guide",
-        "listening": "Listening to you...",
-        "tap": "Tap to ask in Hindi/English"
+        "guide": "Guide",
+        "listening": "Listening...",
+        "tap": "Tap to speak"
     }
 }
