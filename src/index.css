@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* Warm, Trust-Building Palette */
+  --color-primary: #FF9F1C; /* Marigold/Saffron - Optimism */
+  --color-primary-light: #FFBF69;
+  --color-primary-fade: #FFF3E0;
+  
+  --color-secondary: #2EC4B6; /* Safe/Growth Green - Calm */
+  --color-secondary-light: #CBF3F0;
+  
+  --color-text-main: #2D3436; /* Soft Black */
+  --color-text-muted: #636E72;
+  
+  --color-bg-app: #FAFAFA;
+  --color-white: #FFFFFF;
+  
+  --color-accent-blue: #3A86FF; /* Trust Blue for "Govt" concepts */
+
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+  
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-pill: 50px;
+
+  --font-main: 'Outfit', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-main);
+  background-color: #f0f2f5; /* Desktop background */
+  color: var(--color-text-main);
+  -webkit-font-smoothing: antialiased;
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+#root {
+  width: 100%;
+  max-width: 420px; /* Mobile constraint */
+  background-color: var(--color-bg-app);
+  box-shadow: 0 0 40px rgba(0,0,0,0.1);
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Utilities */
+.flex-center { display: flex; align-items: center; justify-content: center; }
+.flex-col { display: flex; flex-direction: column; }
+.text-center { text-align: center; }
+.w-full { width: 100%; }
+
+h1, h2, h3, p { margin: 0; }
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--color-primary), #FF8F00);
+  color: white;
+  border: none;
+  padding: 16px 24px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: var(--radius-pill);
+  width: 100%;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(255, 159, 28, 0.3);
+  transition: transform 0.1s;
+}
+
+.btn-primary:active {
+  transform: scale(0.98);
+}
+
+.card {
+  background: var(--color-white);
+  padding: 20px;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 16px;
+}

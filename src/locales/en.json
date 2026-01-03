@@ -1,0 +1,72 @@
+{
+    "login": {
+        "welcome": "Welcome",
+        "subtitle": "Safe. Simple. Secure.",
+        "phoneLabel": "Mobile Number",
+        "sendOtp": "Send OTP",
+        "verifyOtp": "Verify OTP",
+        "enterOtp": "Enter OTP",
+        "resend": "Resend Code"
+    },
+    "dashboard": {
+        "greeting": "Namaste",
+        "subtitle": "Let's grow your savings.",
+        "currentSavings": "Current Savings",
+        "safeInBonds": "Safe in Government Bonds",
+        "startSaving": "Start Saving ₹10",
+        "nav": {
+            "home": "Home",
+            "learn": "Learn",
+            "trust": "Trust"
+        }
+    },
+    "chatbot": {
+        "title": "Help Assistant",
+        "placeholder": "Type your question...",
+        "welcome": "Namaste! How can I help you with your savings today?"
+    },
+    "invest": {
+        "title": "Save Safe.",
+        "subtitle": "Your money goes into Government Bonds. 100% Secure.",
+        "iWantToSave": "I want to save",
+        "paymentMethods": "🔒 Google Pay / PhonePe / UPI",
+        "cta": "Save ₹{{amount}} Securely",
+        "back": "Back"
+    },
+    "learn": {
+        "title": "Learn Money 🧠",
+        "subtitle": "Simple stories to make you a smart investor.",
+        "story1": {
+            "title": "Why ₹10 matters?",
+            "content": "Even small drops make an ocean. Saving just ₹10 a day adds up to ₹3,650 in a year! Start small, dream big."
+        },
+        "story2": {
+            "title": "What is a Bond?",
+            "content": "A bond is like a loan you give to the Government. They promise to pay you back with interest. It's the safest way to grow money."
+        },
+        "story3": {
+            "title": "Compound Magic",
+            "content": "Compounding is earning interest on interest. The earlier you start, the more your money grows magically over time!"
+        },
+        "story4": {
+            "title": "Safe Withdrawals",
+            "content": "Need money urgently? No problem! You can withdraw your savings anytime and get it in your bank within 24 hours."
+        }
+    },
+    "transparency": {
+        "title": "Where is my money?",
+        "you": "You",
+        "youDesc": "You save money from your bank.",
+        "app": "Invest App",
+        "appDesc": "We safely send it instantly.",
+        "govt": "Government Bond",
+        "govtDesc": "Held securely by the Govt of India.",
+        "alwaysAvailable": "Always Available",
+        "alwaysAvailableDesc": "Withdraw anytime. Money reaches back in 24 hours."
+    },
+    "voice": {
+        "guide": "Didi's Guide",
+        "listening": "Listening to you...",
+        "tap": "Tap to ask in Hindi/English"
+    }
+}
